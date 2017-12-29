@@ -46,6 +46,14 @@ if($p == "home"){
 		<meta name='viewport' content='width=device-width, initial-scale=1' />
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 		<style>
+			@import url('https://fonts.googleapis.com/css?family=Poppins:300,400');
+			img{
+				width:100%;
+			}
+			td{
+				font-family:'Poppins',sans-serif;
+				font-weight:300;
+			}
 			table tr:nth-child(even) {
 				background: #dddddd;
 			}
@@ -54,15 +62,18 @@ if($p == "home"){
 			}
 		</style>
 	</head>";
-	$e.='<div id="chatBox" style="border:2px solid black; max-height:90%; height:90%; background-color:white; overflow-y:scroll;">
+	$e.='<div id="container" style="background-color:#F4F4F4;">
+	<div id="chatBox" style="border:2px solid black; max-height:90%; height:90%; background-color:white; overflow-y:scroll;">
 	<table id="chat" style="width:100%;">
 	</table>
 	</div>';
 	$e.='<center><div id="tools">
 	<br />
-	<input type="text" id="message" placeholder="Message" style="padding:9px; color:#B2B3B8;">
-	<input type="button" id="send" value="Send!" style="padding:10px; border:0px; color:white; background-color:#F14B25;"/>
-	</div></center>';
+	<input type="text" id="message" placeholder="Message" style="padding:9px; color:#6d6d6d; font-wight:bold; font-size:14px;">
+	<input type="button" id="send" value="Send" style="padding:10px; border:0px; color:white; background-color:#F14B25; font-weight:bold; font-size:14px;"/>
+	<input type="button" id="fs" value="FS" style="padding:10px; border:0px; color:white; background-color:#26a2ef; font-weight:bold; font-size:14px;"/>
+	</div></center>
+	</div>';
 	$e.='
 	<script>
 	var nextMessage = 1;
@@ -116,6 +127,22 @@ if($p == "home"){
 			url : "?p=sendMessage&message="+encodeURIComponent(message)
 		});
 		$("#message").val("").focus();
+	});
+	
+	function enterFS(element) {
+	if(element.requestFullscreen)
+		element.requestFullscreen();
+	else if(element.mozRequestFullScreen)
+		element.mozRequestFullScreen();
+	else if(element.webkitRequestFullscreen)
+		element.webkitRequestFullscreen();
+	else if(element.msRequestFullscreen)
+		element.msRequestFullscreen();
+}
+	
+	$("#fs").click(function(){
+		console.log("fs");
+		enterFS(document.querySelector("#container"));
 	});
 	</script>
 	';
