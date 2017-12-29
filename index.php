@@ -80,6 +80,7 @@ if($p == "home"){
 	<input type="button" id="send" value="Send" style="padding:10px; border:0px; color:white; background-color:#F14B25; font-weight:bold; font-size:14px;"/>
 	<input type="button" id="fs" value="FS" style="padding:10px; border:0px; color:white; background-color:#26a2ef; font-weight:bold; font-size:14px;"/>
 	<input type="button" id="efs" value="FS" style="padding:10px; border:0px; color:white; background-color:#26a2ef; font-weight:bold; font-size:14px; display:none;"/>
+	<input type="checkbox" id="scroll" />Scroll
 	</div></center>
 	</div>';
 	$e.='
@@ -116,8 +117,10 @@ if($p == "home"){
 				if(product.ack == "conf"){
 					var messageString = "<span style=\'margin-left:2px;\'>"+product.user + "</span> : " + product.message;
 					$("#chat").html($("#chat").html()+"<tr><td>"+messageString+"</td></tr>");
-					var height = $("#chat").height();
-					$("#chatBox").animate({ scrollTop: height }, 1000);
+					if($("#scroll").prop("checked")){
+						var height = $("#chat").height();
+						$("#chatBox").animate({ scrollTop: height }, 1000);
+					}
 					nextMessage = product.id;
 				}
 				if(product.ack == "tinv"){
