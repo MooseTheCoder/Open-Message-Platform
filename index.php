@@ -94,7 +94,8 @@ if($p == "home"){
 						nextMessage = ++product.id;
 					}
 				});
-				$("#chat").animate({ scrollTop: $("#chat").scrollHeight}, 50);
+				var height = $("#chat").height();
+				$("#chatBox").animate({ scrollTop: height }, 0);
 				awaitNextMessage();
 			}
 		});
@@ -108,8 +109,12 @@ if($p == "home"){
 				if(product.ack == "conf"){
 					var messageString = "<span style=\'margin-left:2px;\'>"+product.user + "</span> : " + product.message;
 					$("#chat").html($("#chat").html()+"<tr><td>"+messageString+"</td></tr>");
+					var height = $("#chat").height();
+					$("#chatBox").animate({ scrollTop: height }, 1000);
 					nextMessage = product.id;
-					$("#chat").animate({ scrollTop: $("#chat").scrollHeight}, 50);
+				}
+				if(product.ack == "tinv"){
+					alert("Session token expired - you need to log back in");
 				}
 				window.setTimeout(function(){
 					awaitNextMessage();
