@@ -1,5 +1,5 @@
 <?php
-const VERSION = "0.0.2";
+const VERSION = "0.0.3";
 const NAME = "Open Message Platform";
 // Open Message Platform using MySQL
 
@@ -78,6 +78,20 @@ function omp_message_history($user,$token){
 	}
 	return $m;
 	
+}
+
+function omp_recent_message_history($user,$token){
+	$tokenAuth = omp_token_auth($user,$token);
+	if($tokenAuth['ack'] != 'tval'){
+		return $tokenAuth['ack'];
+	}
+	$db = db();
+	$mrq = mysqli_query($db,"SELECT * FROM (SELECT * FROM message ORDER BY id DESC LIMIT 20 ) AS a ORDER BY id ASC");
+	$m=[];
+	while($x = mysqli_fetch_assoc($mrq)){
+		$m[]=$x;
+	}
+	return $m;	
 }
 
 function omp_get_next_message($user,$token,$mid){
