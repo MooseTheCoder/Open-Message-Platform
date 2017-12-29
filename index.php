@@ -15,7 +15,7 @@ if(isset($_GET['p'])){
 if($p == "login"){
 	$e="";
 	if(isset($_POST['login'])){
-		$auth = omp_user_auth(strval($_POST['username']),strval($_POST['password']));
+		$auth = omp_user_auth(strval($_POST['username']),sha1(strval($_POST['password'])));
 		if($auth['ack'] != 'auth'){
 			$e.=omp_ref_ack($auth['ack']);
 		}else{
@@ -43,12 +43,25 @@ if($p == "home"){
 	}
 	$e="<head>
 		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width, initial-scale=1' />
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+		<style>
+			table tr:nth-child(even) {
+				background: #dddddd;
+			}
+			body{
+				background-color:#F4F4F4;
+			}
+		</style>
 	</head>";
-	$e.='<div id="chat" style="border:2px solid black; max-height:80%; height:80%; overflow-y:scroll;"></div>';
+	$e.='<div id="chatBox" style="border:2px solid black; max-height:90%; height:90%; background-color:white; overflow-y:scroll;">
+	<table id="chat" style="width:100%;">
+	</table>
+	</div>';
 	$e.='<center><div id="tools">
-	<input type="text" id="message" placeholder="Message">
-	<input type="button" id="send" value="Send!" />
+	<br />
+	<input type="text" id="message" placeholder="Message" style="padding:9px; color:#B2B3B8;">
+	<input type="button" id="send" value="Send!" style="padding:10px; border:0px; color:white; background-color:#F14B25;"/>
 	</div></center>';
 	$e.='
 	<script>
@@ -63,12 +76,13 @@ if($p == "home"){
 				var m = chatData.length;
 				chatData.forEach(function(product){
 					var messageString = "<span style=\'margin-left:2px;\'>"+product.user + "</span> : " + product.message;
-					$("#chat").html($("#chat").html()+messageString+"<br />");
+					$("#chat").html($("#chat").html()+"<tr><td>"+messageString+"</td></tr>");
 					c++;
 					if(c<m){
 						nextMessage = ++product.id;
 					}
 				});
+				$("#chat").animate({ scrollTop: $("#chat").scrollHeight}, 50);
 				awaitNextMessage();
 			}
 		});
@@ -81,8 +95,9 @@ if($p == "home"){
 				var product = $.parseJSON(data);
 				if(product.ack == "conf"){
 					var messageString = "<span style=\'margin-left:2px;\'>"+product.user + "</span> : " + product.message;
-					$("#chat").html($("#chat").html()+messageString+"<br />");
+					$("#chat").html($("#chat").html()+"<tr><td>"+messageString+"</td></tr>");
 					nextMessage = product.id;
+					$("#chat").animate({ scrollTop: $("#chat").scrollHeight}, 50);
 				}
 				window.setTimeout(function(){
 					awaitNextMessage();
@@ -96,7 +111,7 @@ if($p == "home"){
 		message = message.replace(/"/g,"&#34;");
 		message = message.replace(/\'/g,"&#39;");
 		message = message.replace(/<(\/?)script.*/g,"I tried to use a script tag! Lol!!");
-		message = message.replace(/[^a-zA-Z 0-9()!$£*\\/\-&#;,<>=\.\_:]+/g,"");
+		message = message.replace(/[^\^a-zA-Z 0-9()!$£*\\/\-&#;,<>=\.\_:]+/g,"");
 		$.ajax({
 			url : "?p=sendMessage&message="+encodeURIComponent(message)
 		});
