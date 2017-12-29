@@ -1,2 +1,4 @@
 # RandomChatPlat
-A set functions that can be used cross platform for chatting and stuff
+A set of functions for sending, receiving and authenticating chat messages
+
+The demo is not very secure but it works to prove a point.
