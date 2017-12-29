@@ -49,6 +49,7 @@ if($p == "home"){
 			@import url('https://fonts.googleapis.com/css?family=Poppins:300,400');
 			img{
 				width:100%;
+				max-width:950px;
 			}
 			td{
 				font-family:'Poppins',sans-serif;
