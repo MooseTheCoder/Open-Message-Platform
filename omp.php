@@ -1,12 +1,15 @@
 <?php
-const VERSION = "0.0.1";
-
+const VERSION = "0.0.2";
+const NAME = "Open Message Platform";
 // Open Message Platform using MySQL
 
 function db(){
 	return mysqli_connect("localhost","root","password","omp");
 }
 
+function omp_name(){
+	return NAME;
+}
 function omp_ref_ack($err){
 	$ERR_ARR = [
 	'unf'=>'User not found',
