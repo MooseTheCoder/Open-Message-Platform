@@ -25,11 +25,17 @@ if($p == "login"){
 			exit;
 		}
 	}
+	$name = omp_name();
 	$e.='
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</head>
+	<center>
+	<h1>'.$name.'</h1>
 	<form method="post" action="?p=login">
-		<input type="text" name="username" placeholder="Username"><br />
-		<input type="password" name="password" placeholder="Username"><br />
-		<input type="submit" name="login" value="Login">
+		<input type="text" name="username" placeholder="Username" style="padding:9px; color:#6d6d6d; font-wight:bold; font-size:14px; margin:2px; "><br />
+		<input type="password" name="password" placeholder="Password" style="padding:9px; color:#6d6d6d; font-wight:bold; font-size:14px; margin:2px;"><br />
+		<input type="submit" name="login" value="Login" style="padding:10px; border:0px; color:white; background-color:#F14B25; font-weight:bold; font-size:14px;"/>
 	</form>
 	';
 	echo $e;
