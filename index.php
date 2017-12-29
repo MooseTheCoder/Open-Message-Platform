@@ -72,6 +72,7 @@ if($p == "home"){
 	<input type="text" id="message" placeholder="Message" style="padding:9px; color:#6d6d6d; font-wight:bold; font-size:14px;">
 	<input type="button" id="send" value="Send" style="padding:10px; border:0px; color:white; background-color:#F14B25; font-weight:bold; font-size:14px;"/>
 	<input type="button" id="fs" value="FS" style="padding:10px; border:0px; color:white; background-color:#26a2ef; font-weight:bold; font-size:14px;"/>
+	<input type="button" id="efs" value="FS" style="padding:10px; border:0px; color:white; background-color:#26a2ef; font-weight:bold; font-size:14px; display:none;"/>
 	</div></center>
 	</div>';
 	$e.='
@@ -138,11 +139,28 @@ if($p == "home"){
 		element.webkitRequestFullscreen();
 	else if(element.msRequestFullscreen)
 		element.msRequestFullscreen();
-}
+	}
+	
+	function exitFullscreen() {
+	if(document.exitFullscreen) {
+		document.exitFullscreen();
+	} else if(document.mozCancelFullScreen) {
+		document.mozCancelFullScreen();
+	} else if(document.webkitExitFullscreen) {
+		document.webkitExitFullscreen();
+		}
+	}
 	
 	$("#fs").click(function(){
-		console.log("fs");
 		enterFS(document.querySelector("#container"));
+		$("#efs").css("display","inline");
+		$("#fs").css("display","none");
+	});
+	
+	$("#efs").click(function(){
+		exitFullscreen();
+		$("#efs").css("display","none");
+		$("#fs").css("display","inline");
 	});
 	</script>
 	';
