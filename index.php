@@ -93,7 +93,7 @@ if($p == "home"){
 		
 	$(document).ready(function(){
 		$.ajax({
-			url : "?p=chatHistory",
+			url : "?p=chatRecent",
 			success : function(data){
 				var c = 0;
 				var chatData = $.parseJSON(data);
@@ -190,6 +190,10 @@ if($p == "home"){
 
 if($p == "chatHistory"){
 	echo json_encode(omp_message_history($_SESSION['user'],$_SESSION['token']));
+}
+
+if($p == "chatRecent"){
+	echo json_encode(omp_recent_message_history($_SESSION['user'],$_SESSION['token']));
 }
 
 if($p == "nextMessage"){
