@@ -51,6 +51,7 @@ if($p == "home"){
 		<meta charset='utf-8' />
 		<meta name='viewport' content='width=device-width, initial-scale=1' />
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+		<script src='//twemoji.maxcdn.com/2/twemoji.min.js?2.4'></script>
 		<style>
 			@import url('https://fonts.googleapis.com/css?family=Poppins:300,400');
 			img{
@@ -63,6 +64,9 @@ if($p == "home"){
 			}
 			table tr:nth-child(even) {
 				background: #dddddd;
+			}
+			.emoji{
+				width:16px !important;
 			}
 			body{
 				background-color:#F4F4F4;
@@ -135,10 +139,12 @@ if($p == "home"){
 	
 	$("#send").click(function(){
 		var message = $("#message").val();
-		message = message.replace(/"/g,"&#34;");
+		message = twemoji.parse(message);
+		console.log(message);
+		//message = message.replace(/"/g,"&#34;");
 		message = message.replace(/\'/g,"&#39;");
 		message = message.replace(/<(\/?)script.*/g,"I tried to use a script tag! Lol!!");
-		message = message.replace(/[^\^a-zA-Z 0-9()!$£*\\/\-&#;,<>=\.\_:]+/g,"");
+		message = message.replace(/[^\^a-zA-Z 0-9()!$£*\\/\-&#;,<>=\.\_:"]+/g,"");
 		$.ajax({
 			url : "?p=sendMessage&message="+encodeURIComponent(message)
 		});
