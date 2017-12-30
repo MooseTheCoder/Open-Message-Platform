@@ -80,6 +80,7 @@ if($p == "home"){
 	</div>';
 	$e.='<center><div id="tools">
 	<br />
+	<input type="button" id="im" value="I" style="padding:10px; border:0px; color:white; background-color:#ed9625; font-weight:bold; font-size:14px;"/>
 	<input type="text" id="message" placeholder="Message" style="padding:9px; color:#6d6d6d; font-wight:bold; font-size:14px;">
 	<input type="button" id="send" value="Send" style="padding:10px; border:0px; color:white; background-color:#F14B25; font-weight:bold; font-size:14px;"/>
 	<input type="button" id="fs" value="FS" style="padding:10px; border:0px; color:white; background-color:#26a2ef; font-weight:bold; font-size:14px;"/>
@@ -90,7 +91,14 @@ if($p == "home"){
 	$e.='
 	<script>
 	var nextMessage = 1;
-		
+	var currentMessageValue = "";
+	var windowFocus = true;
+	$(window).blur(function(){
+		windowFocus = false;
+	});
+    $(window).focus(function(){
+		windowFocus = true;
+    });
 	$(document).ready(function(){
 		$.ajax({
 			url : "?p=chatRecent",
@@ -112,7 +120,15 @@ if($p == "home"){
 			}
 		});
 	});
-		
+	function notify(title,message){
+		if (Notification.permission != "granted"){
+			Notification.requestPermission();
+		}else{
+			var sysNote = new Notification(title, {
+				body: message,
+			});
+		}
+	}
 	function awaitNextMessage(){
 		$.ajax({
 			url : "?p=nextMessage&id="+nextMessage,
@@ -124,6 +140,14 @@ if($p == "home"){
 					if($("#scroll").prop("checked")){
 						var height = $("#chat").height();
 						$("#chatBox").animate({ scrollTop: height }, 1000);
+					}
+					if(product.message != currentMessageValue){
+						var notification = new Audio("notif.mp3");
+						notification.play();
+						if(windowFocus == false){
+							notify(product.user,product.message);
+						}
+
 					}
 					nextMessage = product.id;
 				}
@@ -140,15 +164,19 @@ if($p == "home"){
 	$("#send").click(function(){
 		var message = $("#message").val();
 		message = twemoji.parse(message);
-		console.log(message);
-		//message = message.replace(/"/g,"&#34;");
 		message = message.replace(/\'/g,"&#39;");
+		message = message.replace(/%20/g," ");
 		message = message.replace(/<(\/?)script.*/g,"I tried to use a script tag! Lol!!");
-		message = message.replace(/[^\^a-zA-Z 0-9()!$£*\\/\-&#;,<>=\.\_:"]+/g,"");
+		message = message.replace(/[^\^a-zA-Z 0-9()!$£*\\/\-&#;,<>=\.\_:"%]+/g,"");
+		currentMessageValue = message;
 		$.ajax({
 			url : "?p=sendMessage&message="+encodeURIComponent(message)
 		});
 		$("#message").val("").focus();
+	});
+	
+	$("#im").click(function(){
+		$("#message").val($("#message").val()+"<img src=\"\">");
 	});
 	
 	function enterFS(element) {
